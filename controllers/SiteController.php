@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\widgets\ActiveForm;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -139,15 +140,38 @@ class SiteController extends Controller
         }
 
         $model = new SignUpForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signUp()) {
-                Yii::$app->getSession()->setFlash('success', 'Регистрация успешно выполнена.');
-                return $this->redirect(array('site/login'));
-            }
-        }
-
         return $this->render('sign-up',
             compact('model')
         );
+    }
+
+    /**
+     * Ajax Validate Form
+     * @return Response
+     */
+    public function actionValidateForm()
+    {
+        $model = new SignUpForm();
+        $req = Yii::$app->request;
+        if (!$model->load($req->post()) || !$req->isAjax) {
+            return $this->asJson(false);
+        }
+
+        return $this->asJson(ActiveForm::validate($model));
+    }
+
+    /**
+     * Create Account
+     * @return Response
+     */
+    public function actionCreateAccount()
+    {
+        $model = new SignUpForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signUp()) {
+            Yii::$app->getSession()->setFlash('success', 'Регистрация успешно выполнена.');
+            return $this->redirect(array('site/login'));
+        }
+
+        return $this->asJson(false);
     }
 }

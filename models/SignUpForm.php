@@ -8,6 +8,7 @@ class SignUpForm extends Model
 {
     public $username;
     public $password;
+    public $password_repeat;
 
     /**
      * @inheritdoc
@@ -15,14 +16,15 @@ class SignUpForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password'], 'required', 'message' => 'Заполните поле'],
+            [['username', 'password', 'password_repeat'], 'required', 'message' => 'Заполните поле'],
 
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['username', 'unique', 'targetAttribute' => 'username', 'targetClass' => 'app\models\User', 'message' => 'Этот логин уже занят.'],
 
-            ['password', 'string', 'min' => 6]
+            [['password', 'password_repeat'], 'string', 'min' => 6, 'max' => 255],
+            ['password_repeat', 'compare', 'compareAttribute' => 'password', 'skipOnEmpty' => false, 'message' => 'Пароль не совпадает'],
         ];
     }
 
@@ -33,7 +35,8 @@ class SignUpForm extends Model
     {
         return [
             'username' => 'Логин',
-            'password' => 'Пароль'
+            'password' => 'Пароль',
+            'password_repeat' => 'Повторите Пароль'
         ];
     }
 
