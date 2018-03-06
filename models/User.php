@@ -3,9 +3,9 @@
 namespace app\models;
 
 use Yii;
-use Yii\db\ActiveRecord;
-use Yii\web\IdentityInterface;
-use Yii\base\NotSupportedException;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "users".
