@@ -41,18 +41,15 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            Yii::$app->user->isGuest ?
+                ['label' => 'User Login', 'url' => ['#'], 'items' => [
+                    ['label' => 'Sign up', 'url' => '/site/sign-up'],
+                    ['label' => 'Sign in', 'url' => '/site/login'],
+                ]] :
+                ['label' => 'Welcome '. Yii::$app->user->identity->username, 'items' => [
+                    ['label' => 'Logout', 'url' => ['/site/logout'],
+                        'linkOptions' => ['data-method' => 'post']],
+                ]]
         ],
     ]);
     NavBar::end();
