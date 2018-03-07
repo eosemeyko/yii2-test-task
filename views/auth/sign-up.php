@@ -14,7 +14,7 @@ use yii\widgets\Pjax;
         <div class="alert alert-success"> Регистрация успешно выполнена! </div>
         <p>
             Перейдите на страницу авторизации
-            <?= Html::a("Sign in", ['site/login'], ['class' => 'btn btn-primary']); ?>
+            <?= Html::a("Sign in", ['auth/login'], ['class' => 'btn btn-primary']); ?>
         </p>
     <?php else: ?>
 

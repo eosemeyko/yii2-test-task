@@ -43,11 +43,11 @@ AppAsset::register($this);
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ?
                 ['label' => 'User Login', 'url' => ['#'], 'items' => [
-                    ['label' => 'Sign up', 'url' => '/site/sign-up'],
-                    ['label' => 'Sign in', 'url' => '/site/login'],
+                    ['label' => 'Sign up', 'url' => '/auth/sign-up'],
+                    ['label' => 'Sign in', 'url' => '/auth/login'],
                 ]] :
                 ['label' => 'Welcome '. Yii::$app->user->identity->username, 'items' => [
-                    ['label' => 'Logout', 'url' => ['/site/logout'],
+                    ['label' => 'Logout', 'url' => ['/auth/logout'],
                         'linkOptions' => ['data-method' => 'post']],
                 ]]
         ],
