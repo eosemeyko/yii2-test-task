@@ -122,17 +122,23 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     /**
      * Generates "remember me" authentication key
+     * @throws \yii\base\Exception
      */
     public function generateAuthKey()
     {
         $this->authKey = Yii::$app->security->generateRandomString();
     }
 
+    /**
+     * @param bool $insert
+     * @return bool
+     * @throws \yii\base\Exception
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
@@ -142,5 +148,15 @@ class User extends ActiveRecord implements IdentityInterface
             return true;
         }
         return false;
+    }
+
+    /**
+     * Create Hash Password
+     * @param $password
+     * @throws \yii\base\Exception
+     */
+    public function setPassword($password)
+    {
+        $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 }

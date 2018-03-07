@@ -43,13 +43,14 @@ class SignUpForm extends Model
     /**
      * Signs user up
      * @return User|null
+     * @throws \yii\base\Exception
      */
     public function signUp()
     {
         if ($this->validate()) {
             $user = new User();
             $user->username = $this->username;
-            $user->password = $this->password;
+            $user->setPassword($this->password);
             $user->generateAuthKey();
 
             if ($user->save())
