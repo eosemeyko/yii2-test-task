@@ -140,6 +140,16 @@ class SiteController extends Controller
         }
 
         $model = new SignUpForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signUp()) {
+            if (Yii::$app->request->isPjax)
+                return $this->renderAjax('sign-up', [
+                    'model' => $model,
+                    'registration_success' => true
+                ]);
+
+            return $this->asJson(['registration' => true]);
+        }
+
         return $this->render('sign-up',
             compact('model')
         );
@@ -158,20 +168,5 @@ class SiteController extends Controller
         }
 
         return $this->asJson(ActiveForm::validate($model));
-    }
-
-    /**
-     * Create Account
-     * @return Response
-     */
-    public function actionCreateAccount()
-    {
-        $model = new SignUpForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signUp()) {
-            Yii::$app->getSession()->setFlash('success', 'Регистрация успешно выполнена.');
-            return $this->redirect(array('site/login'));
-        }
-
-        return $this->asJson(false);
     }
 }
